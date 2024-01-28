@@ -8,7 +8,7 @@
 
 Find the App Useful? [You can always buy me a coffee](https://www.buymeacoffee.com/johnsmilga)
 
-#### Contents
+#### Contents #
 
 1. Node Tutorial
 2. Express Tutorial
