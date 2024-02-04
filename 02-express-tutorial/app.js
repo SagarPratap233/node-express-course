@@ -1,64 +1,55 @@
 
-
 const express = require('express')
 const app = express()
-const {products} = require('./data')
- 
-// app.get('/', (req, res)=> {
-//     // res.json([{name:"Sagar"}, {name : 'Pratap'}])
-//     res.json(products)
-    
+const logger = require('./logger')
 
+// lets move this logger middle ware to some otehr file
+// const logger = (req, res, next) => {
+
+//     let method = req.method;
+//     let url = req.url;
+//     let time = new Date().getFullYear();
+//     console.log(method);
+//     console.log(time);
+//     console.log(url);
+    
+//     //middleware after completeling its functions needs to move to next middleware or needs to send a response 
+  
+//     // res.send("HI");
+//     next();
+// }
+// we want to get these avaialble in all the routes we need to have a function 
+// these function are middleware
+
+// app.get('/', (req, res)=> {
+//     let method = req.method;
+//     let url = req.url;
+//     let time = new Date().getFullYear();
+//     console.log(method);
+//     console.log(time);
+//     console.log(url);
+
+//     res.send("Home Page");
 // })
 
-app.get('/', (req, res) => {
-    // res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Cache-Control', 'no-store');  // Disable caching
-    res.status(200).send('<h1>HomePage</h1><br><a href = "/API">API Products</a></br>');
-});
+// to avoid using logger in every route we can just simply add app.use
+app.use(logger);
 
 
-app.get('/API', (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Cache-Control', 'no-store');  // Disable caching
-    const newProducts = products.map((product)=> {
-        const {id, name, image} = product;
-        return {id, name, image}
-    })
-    res.status(200).json(newProducts);
-});
+app.get('/' , (req , res)=> {
 
-// when you want to specify simgle products separately 
+    res.send("Home Page");
+})
 
-// app.get('/API/1', (req, res) => {
-//     res.setHeader('Content-Type', 'application/json');
-//     res.setHeader('Cache-Control', 'no-store');  // Disable caching
-//     const newProducts1 = products.find((product)=> product.id === 1
-//     )
-//     res.status(200).json(newProducts1);
-// });
+app.get('/about' , (req , res)=> {
 
+    res.send("About");
+})
 
-// lets say there so many prodcuts then you can writ each setup
-// we use route parameters 
+app.get('/profile' , (req , res)=> {
 
-
-app.get('/API/:customerID', (req, res) => {
-
-    // console.log(req)
-    console.log(req.params);
-    const {customerID} = req.params;
-
-    //customerID is always string 
-    const newProducts1 = products.find((product)=> product.id === Number(customerID));
-    if(!newProducts1)
-    {
-        return res.status.send("Could not find the product")
-    }
-    return res.status(200).json(newProducts1);
-});
-
-
+    res.send("profile");
+})
 
 
 app.listen(5000, ()=> {
